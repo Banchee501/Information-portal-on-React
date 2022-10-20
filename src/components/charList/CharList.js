@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MarvelService from '../../services/MarvelService';
@@ -28,7 +29,7 @@ const CharList = (props) => {
     }
 
     const onCharListLoading = () => {
-        setLoading(true);
+        setNewItemLoading(true);
     }
 
     const onCharListLoaded = (newCharList) => {
@@ -39,7 +40,7 @@ const CharList = (props) => {
 
         setCharList(charList => [...charList, ...newCharList]);
         setLoading(loading => false);
-        setNewItemLoading(NewItemLoading => false);
+        setNewItemLoading(newItemLoading => false);
         setOffset(offset => offset + 9);
         setCharEnded(charEnded => ended);
     }
@@ -82,7 +83,7 @@ const CharList = (props) => {
                     }}>
                     <img src={item.thumbnail} alt={item.name} style={imgStyle} />
                     <div className="char__name">{item.name}</div>
-                </li >
+                </li>
             )
         });
 
