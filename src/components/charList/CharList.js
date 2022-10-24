@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner';
@@ -14,6 +15,21 @@ const CharList = (props) => {
     const [charEnded, setCharEnded] = useState(false);
 
     const { loading, error, getAllCharacters } = useMarvelService();
+
+    const duration = 300;
+
+    const defaultStyle = {
+        transition: `opacity ${duration}ms ease-in-out`,
+        opacity: 0,
+    }
+
+    const transitionStyles = {
+        entering: { opacity: 1 },
+        entered: { opacity: 1 },
+        exiting: { opacity: 0 },
+        exited: { opacity: 0 },
+    };
+
 
     useEffect(() => {
         onRequest(offset, true);
@@ -53,31 +69,33 @@ const CharList = (props) => {
             }
 
             return (
-                <li
-                    className="char__item"
-                    tabIndex={0}
-                    ref={el => itemRefs.current[i] = el}
-                    key={item.id}
-                    onClick={() => {
-                        props.onCharSelected(item.id);
-                        focusOnItem(i);
-                    }}
-                    onKeyPress={(e) => {
-                        if (e.key === ' ' || e.key === "Enter") {
+                <CSSTransition timeout={500} classNames="char__item">
+                    <li
+                        className="char__item"
+                        tabIndex={0}
+                        ref={el => itemRefs.current[i] = el}
+                        key={item.id}
+                        onClick={() => {
                             props.onCharSelected(item.id);
                             focusOnItem(i);
-                        }
-                    }}>
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle} />
-                    <div className="char__name">{item.name}</div>
-                </li>
+                        }}
+                        onKeyPress={(e) => {
+                            if (e.key === ' ' || e.key === "Enter") {
+                                props.onCharSelected(item.id);
+                                focusOnItem(i);
+                            }
+                        }}>
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                </CSSTransition >
             )
         });
 
         return (
-            <ul className="char__grid">
+            <TransitionGroup component={'ul'} className='char__grid'>
                 {items}
-            </ul>
+            </TransitionGroup>
         )
     }
 
