@@ -1,3 +1,6 @@
+# A course project using react and the Marvel Comics API to get information from the server by sending requests.
+For the correct operation of requests to the server, it is recommended to register on the portal and get a unique key from https://developer.marvel.com/ Then use the received key in the _apiKey constant along the path src/services/MarvelService.js 7:21
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
