@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import axios from "axios";
 
 export const useHttp = () => {
     const [process, setProcess] = useState('waiting');
@@ -8,13 +9,18 @@ export const useHttp = () => {
         setProcess('loading');
 
         try {
-            const response = await fetch(url, { method, body, headers });
+            const response = await axios({ 
+                method: method, 
+                url: url,
+                body: body, 
+                headers: headers 
+            });
 
-            if (!response.ok) {
+            if (response.status !== 200) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
 
-            const data = await response.json();
+            const data = response.data;
 
             return data;
         } catch (e) {
